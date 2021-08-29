@@ -1,11 +1,12 @@
 using System.Collections;
+using PlayerNS;
 using UnityEngine;
 
 public class Player : MonoBehaviour
 {
     private Rigidbody2D rb;
     private PlayerAnimation playerAnim;
-    private SpriteRenderer playerSpriteRend;
+    private SpriteRenderer spriteRend;
 
     [SerializeField] private GameObject swordArcGO;
     [SerializeField] private SpriteRenderer swordArcRend;
@@ -19,11 +20,10 @@ public class Player : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         playerAnim = GetComponent<PlayerAnimation>();
-        playerSpriteRend = GameObject.Find("PlayerSprite").GetComponent<SpriteRenderer>();
-        swordArcGO = GameObject.Find("SwordArc");
+        spriteRend = transform.Find("Sprite").GetComponent<SpriteRenderer>();
         swordArcRend = swordArcGO.GetComponent<SpriteRenderer>();
 
-        if (rb == null || playerAnim == null || playerSpriteRend == null || swordArcGO == null || swordArcRend == null)
+        if (rb == null || playerAnim == null || spriteRend == null || swordArcGO == null || swordArcRend == null)
             Debug.LogWarning("Set required components in player script");
     }
 
@@ -53,7 +53,6 @@ public class Player : MonoBehaviour
         var moveH = Input.GetAxisRaw("Horizontal") * speed;
         var flipped = moveH < 0;
         FlipPlayer(flipped);
-       
 
         var spacePressed = Input.GetKeyDown(KeyCode.Space);
         var leftBtnPressed = Input.GetMouseButtonDown(0);
@@ -73,10 +72,10 @@ public class Player : MonoBehaviour
 
     private void FlipPlayer(bool isFlipped)
     {
-        playerSpriteRend.flipX = isFlipped;
+        spriteRend.flipX = isFlipped;
         swordArcRend.flipX = isFlipped;
         swordArcRend.flipY = isFlipped;
-        
+
         var newPos = swordArcGO.transform.localPosition;
         if (isFlipped) newPos.x = -1f;
         else newPos.x = 1;

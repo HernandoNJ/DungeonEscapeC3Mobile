@@ -1,5 +1,7 @@
 using UnityEngine;
 
+namespace PlayerNS
+{
 public class PlayerAnimation : MonoBehaviour
 {
     [SerializeField] private Animator animator;
@@ -27,5 +29,6 @@ public class PlayerAnimation : MonoBehaviour
         swordAnimator.SetTrigger("swordAttack");
     }
     
+}
 }
 
