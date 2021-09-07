@@ -1,18 +1,32 @@
+using System;
 using System.Collections;
-using System.Collections.Generic;
+using Interfaces;
 using UnityEngine;
 
+namespace PlayerNS
+{
 public class Attack : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] private int damageAmount;
+
+    [SerializeField] private bool attackEnabled;
+
+    private void Start() => attackEnabled = true;
+
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        
+        var hit = other.GetComponent<IDamageable>();
+
+        if (hit == null || attackEnabled == false) return;
+        hit.Damage(damageAmount);
+        attackEnabled = false;
+        StartCoroutine(AttackResetRoutine());
     }
 
-    // Update is called once per frame
-    void Update()
+    private IEnumerator AttackResetRoutine()
     {
-        
+        yield return new WaitForSeconds(0.5f);
+        attackEnabled = true;
     }
+}
 }
