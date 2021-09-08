@@ -1,11 +1,23 @@
+using Unity.Mathematics;
+using UnityEngine;
+
 namespace EnemyNS
 {
 public class Spider : Enemy
 {
-    // Initialization
-    public override void Init()
+    protected override void SetGemsAmount() => gemsAmount = 2;
+
+    [SerializeField] private GameObject acidPrefab;
+
+    // avoid checking anim parameters
+    protected override void Update() { }
+
+    protected override void EnemyMove() { }
+
+    public void SpiderAttack()
     {
-        base.Init();
+        Instantiate(acidPrefab, transform.position, quaternion.identity);
     }
 }
+
 }

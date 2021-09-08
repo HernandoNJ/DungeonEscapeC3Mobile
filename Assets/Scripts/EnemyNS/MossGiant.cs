@@ -2,10 +2,14 @@ namespace EnemyNS
 {
 public class MossGiant : Enemy
 {
-    // Initialization
-    public override void Init()
+    protected override void SetGemsAmount() => gemsAmount = 5;
+
+    public override void Damage(int damageAmount)
     {
-        base.Init();
+        base.Damage(damageAmount);
+        animator.SetTrigger("Hit");
+        isHit = true;
+        animator.SetBool("inCombat", true);
     }
 }
 }

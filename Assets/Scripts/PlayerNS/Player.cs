@@ -1,8 +1,10 @@
 using System.Collections;
-using PlayerNS;
+using Interfaces;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+namespace PlayerNS
+{
+public class Player : MonoBehaviour, IDamageable
 {
     private Rigidbody2D rb;
     private PlayerAnimation playerAnim;
@@ -12,12 +14,19 @@ public class Player : MonoBehaviour
     [SerializeField] private SpriteRenderer swordArcRend;
     [SerializeField] private float jumpForce = 5f;
     [SerializeField] private float speed = 5f;
+    [SerializeField] private float startHealth, currentHealth;
     [SerializeField] private bool resetJump;
     [SerializeField] private bool isGrounded;
     [SerializeField] private LayerMask groundLayerMask;
+    
+    public int Health{ get; set; }
 
+    public int diamonds;
+    
     private void Start()
     {
+        Health = (int)startHealth;
+        
         rb = GetComponent<Rigidbody2D>();
         playerAnim = GetComponent<PlayerAnimation>();
         spriteRend = transform.Find("Sprite").GetComponent<SpriteRenderer>();
@@ -31,6 +40,7 @@ public class Player : MonoBehaviour
     {
         MovePlayer();
         CheckGrounded();
+        currentHealth = Health;
     }
 
     private void CheckGrounded()
@@ -89,4 +99,11 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
         resetJump = false;
     }
+
+    public void Damage(int damageAmount)
+    {
+        Health -= damageAmount;
+        if(Health<1) playerAnim.SetDeathAnim();
+    }
+}
 }

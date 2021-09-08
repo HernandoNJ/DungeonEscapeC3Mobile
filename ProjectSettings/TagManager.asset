@@ -15,8 +15,8 @@ TagManager:
   - GroundLayer
   - SwordLayer
   - PlayerLayer
-  - 
-  - 
+  - Enemy
+  - EnemyAttack
   - 
   - 
   - 
