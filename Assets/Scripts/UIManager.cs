@@ -19,4 +19,11 @@ public class UIManager : MonoBehaviour
     {
         playerGemsCountText.text = gemsCount + " G";
     }
+
+    public void UpdateShopSelection(int yPos)
+    {
+        
+        var xPos = selectionImage.rectTransform.anchoredPosition.x;
+        selectionImage.rectTransform.anchoredPosition = new Vector2(xPos, yPos);
+    }
 }
