@@ -43,17 +43,14 @@ public class Shop : MonoBehaviour
             case 0: // Flame sword 
                 uiInst.UpdateShopSelection(50);
                 currentItemCost = 200;
-
                 break;
             case 1: // Boots of flight 
                 uiInst.UpdateShopSelection(-40);
                 currentItemCost = 400;
-
                 break;
             case 2: // Key to castle
                 uiInst.UpdateShopSelection(-135);
                 currentItemCost = 100;
-
                 break;
         }
     }
@@ -66,6 +63,7 @@ public class Shop : MonoBehaviour
             player.diamonds -= currentItemCost;
             Debug.Log("purchased item: " + currentItem);
             Debug.Log("remaining diamonds: " + player.diamonds);
+            if (currentItem == 2) GameManager.Instance.HasKeyToCastle = true;
             ActivateShop(false);
         }
         else

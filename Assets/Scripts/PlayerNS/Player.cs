@@ -14,7 +14,7 @@ public class Player : MonoBehaviour, IDamageable
     [SerializeField] private SpriteRenderer swordArcRend;
     [SerializeField] private float jumpForce = 5f;
     [SerializeField] private float speed = 5f;
-    [SerializeField] private float startHealth, currentHealth;
+    [SerializeField] private float startHealth;
     [SerializeField] private bool resetJump;
     [SerializeField] private bool isGrounded;
     [SerializeField] private LayerMask groundLayerMask;
@@ -25,6 +25,7 @@ public class Player : MonoBehaviour, IDamageable
     
     private void Start()
     {
+        startHealth = 4;
         Health = (int)startHealth;
         
         rb = GetComponent<Rigidbody2D>();
@@ -40,7 +41,6 @@ public class Player : MonoBehaviour, IDamageable
     {
         MovePlayer();
         CheckGrounded();
-        currentHealth = Health;
     }
 
     private void CheckGrounded()
@@ -60,6 +60,8 @@ public class Player : MonoBehaviour, IDamageable
 
     private void MovePlayer()
     {
+        if (Health < 1) return;
+        
         var moveH = Input.GetAxisRaw("Horizontal") * speed;
         var flipped = moveH < 0;
         FlipPlayer(flipped);
@@ -102,8 +104,16 @@ public class Player : MonoBehaviour, IDamageable
 
     public void Damage(int damageAmount)
     {
+        if (Health < 1) return;
         Health -= damageAmount;
+        UIManager.Instance.UpdateLives(Health);
         if(Health<1) playerAnim.SetDeathAnim();
+    }
+
+    public void AddGems(int amount)
+    {
+        diamonds += amount;
+        UIManager.Instance.UpdateGemsCount(diamonds);
     }
 }
 }

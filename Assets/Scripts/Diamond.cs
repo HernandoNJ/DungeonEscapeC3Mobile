@@ -10,7 +10,7 @@ public class Diamond : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             var player = other.GetComponent<Player>();
-            if (player != null) player.diamonds += gems;
+            if (player != null) player.AddGems(gems);
             Destroy(gameObject);
         }
     }
