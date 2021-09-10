@@ -1,6 +1,7 @@
 using System.Collections;
 using Interfaces;
 using UnityEngine;
+using UnityStandardAssets.CrossPlatformInput;
 
 namespace PlayerNS
 {
@@ -18,16 +19,16 @@ public class Player : MonoBehaviour, IDamageable
     [SerializeField] private bool resetJump;
     [SerializeField] private bool isGrounded;
     [SerializeField] private LayerMask groundLayerMask;
-    
+
     public int Health{ get; set; }
 
     public int diamonds;
-    
+
     private void Start()
     {
         startHealth = 4;
         Health = (int)startHealth;
-        
+
         rb = GetComponent<Rigidbody2D>();
         playerAnim = GetComponent<PlayerAnimation>();
         spriteRend = transform.Find("Sprite").GetComponent<SpriteRenderer>();
@@ -61,22 +62,25 @@ public class Player : MonoBehaviour, IDamageable
     private void MovePlayer()
     {
         if (Health < 1) return;
-        
-        var moveH = Input.GetAxisRaw("Horizontal") * speed;
+
+        //var moveH = Input.GetAxisRaw("Horizontal") * speed;
+        var moveH = CrossPlatformInputManager.GetAxis("Horizontal") * speed;
+        var spacePressed = Input.GetKeyDown(KeyCode.Space);
+        var leftBtnPressed = Input.GetMouseButtonDown(0);
+        var ABtnPressed = CrossPlatformInputManager.GetButtonDown("A_btn"); // Attack
+        var BBtnPressed = CrossPlatformInputManager.GetButtonDown("B_btn"); // Jump
+
         var flipped = moveH < 0;
         FlipPlayer(flipped);
 
-        var spacePressed = Input.GetKeyDown(KeyCode.Space);
-        var leftBtnPressed = Input.GetMouseButtonDown(0);
-
-        if (spacePressed && isGrounded)
+        if ((spacePressed || BBtnPressed) && isGrounded)
         {
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
             StartCoroutine(ResetJumpRoutine());
             playerAnim.SetJumpAnim(true);
         }
 
-        if (leftBtnPressed && isGrounded) playerAnim.SetAttackAnim();
+        if (ABtnPressed && isGrounded) playerAnim.SetAttackAnim();
 
         rb.velocity = new Vector2(moveH, rb.velocity.y);
         playerAnim.SetRunAnim(moveH);
@@ -107,7 +111,7 @@ public class Player : MonoBehaviour, IDamageable
         if (Health < 1) return;
         Health -= damageAmount;
         UIManager.Instance.UpdateLives(Health);
-        if(Health<1) playerAnim.SetDeathAnim();
+        if (Health < 1) playerAnim.SetDeathAnim();
     }
 
     public void AddGems(int amount)
