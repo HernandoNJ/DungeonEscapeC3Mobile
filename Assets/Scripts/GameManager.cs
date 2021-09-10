@@ -1,3 +1,4 @@
+using PlayerNS;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -7,8 +8,13 @@ public class GameManager : MonoBehaviour
     {get{ if(instance == null) Debug.LogError("Game Manager is null");
             return instance; }}
 
+    public Player Player{ get; private set; }
     public bool HasKeyToCastle{ get; set; }
     
-    private void Awake() => instance = this;
+    private void Awake()
+    {
+        instance = this;
+        Player = GameObject.FindWithTag("Player").GetComponent<Player>();
+    }
 
 }
