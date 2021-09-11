@@ -7,7 +7,8 @@ public class Shop : MonoBehaviour
     [SerializeField] private GameObject playerSprite;
     [SerializeField] private GameObject swordArc;
     [SerializeField] private Player player;
-
+    [SerializeField] private AdsManager adsManager;
+    
     public int currentItem;
     public int currentItemCost;
 
@@ -18,13 +19,13 @@ public class Shop : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Player"))
-        {
-            player = other.GetComponent<Player>();
-            if (player != null)
-                UIManager.Instance.OpenShop(player.diamonds);
-            ActivateShop(true);
-        }
+        if (!other.CompareTag("Player")) return;
+        player = other.GetComponent<Player>();
+                                              
+        if (player == null) return;
+        UIManager.Instance.UpdateShopGemsCount(player.diamonds);
+        ActivateShop(true);
+        adsManager.LoadAd();
     }
 
     private void OnTriggerExit2D(Collider2D other)

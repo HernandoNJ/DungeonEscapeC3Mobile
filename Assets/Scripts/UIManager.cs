@@ -20,7 +20,7 @@ public class UIManager : MonoBehaviour
         if (instance == null) Debug.LogError("UI Manager is null");
     }
 
-    public void OpenShop(int gemsCount)
+    public void UpdateShopGemsCount(int gemsCount)
     {
         playerGemsCountText.text = gemsCount + " G";
     }
@@ -31,7 +31,7 @@ public class UIManager : MonoBehaviour
         selectionImage.rectTransform.anchoredPosition = new Vector2(xPos, yPos);
     }
 
-    public void UpdateGemsCount(int count)
+    public void UpdateUIGemsCount(int count)
     {
         gemCountText.text = "" + count;
     }

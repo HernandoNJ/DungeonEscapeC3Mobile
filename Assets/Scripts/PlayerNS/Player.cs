@@ -117,7 +117,7 @@ public class Player : MonoBehaviour, IDamageable
     public void AddGems(int amount)
     {
         diamonds += amount;
-        UIManager.Instance.UpdateGemsCount(diamonds);
+        UIManager.Instance.UpdateUIGemsCount(diamonds);
     }
 }
 }
